@@ -1,0 +1,26 @@
+Invalid line: "AccountId,TransferID,Amount"
+Invalid line: "---------------------------"
+Invalid line: ",,,"
+Invalid line: ",,,,"
+Invalid line: ","
+Invalid line: "A10,200.00,T1002"
+Invalid line: "AccountId,TransferID,Amount"
+Invalid line: ",,"
+Invalid line: "A10|T1002|200.00"
+Invalid line: "A10,T1002,200.00,test"
+Invalid line: "test,test,test"
+Invalid line: "200.00,A10,T1002"
+Duplicated transaction: "A10,T1002,200.00"
+Duplicated transaction: "A10,T1002,200.00"
+Duplicated transaction: "A10,T1003,400.00"
+Invalid line: "This is a crash test dummy"
+
+== Highest Transaction ==
+AccountID	Transaction
+--------------------------------
+A10		400
+
+== Comissions ==
+AccountID	Comission
+--------------------------------
+A10		20

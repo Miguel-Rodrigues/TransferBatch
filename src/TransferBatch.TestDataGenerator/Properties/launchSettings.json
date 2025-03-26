@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TransferBatch.TestDataGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.100KB.csv"
+    }
+  }
+}
