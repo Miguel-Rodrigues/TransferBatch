@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Security.Cryptography;
+using System.IO.MemoryMappedFiles;
+using System.Reflection;
 using System.Text;
 using TransferBatch.Common.Dto;
 
@@ -12,12 +12,11 @@ namespace TransferBatch.Common.Services;
 /// </summary>
 public class TransferBatchService
 {
-    private static readonly decimal TRANSFERS_FEE = 0.1m;
+    private const int BLOCK_COUNT = 10;
+    private const decimal TRANSFERS_FEE = 0.1m;
 
     private readonly ConcurrentQueue<(string AccountId, decimal Amount)> _elegibleForHighestTransfer = new();
-    private readonly ConcurrentDictionary<string, bool> _checkedTransactions = new(); //Using a dictionary as there is no ConcurrentHashSet.
     private readonly ConcurrentDictionary<string, decimal> _totalsPerAccount = new();
-    private readonly SemaphoreSlim _semaphore = new(1, 1);
     private (string AccountId, decimal Amount) _highestTransfer;
 
     private long _fileSize = 0;
@@ -30,12 +29,12 @@ public class TransferBatchService
     /// <returns>The asynchronous task of this call</returns>
     public async Task ProcessTransfers(TransferBatchOptions options)
     {
-        using var _fileStream = new FileStream(options.FilePath, FileMode.Open, FileAccess.Read);
-        using var _streamReader = new StreamReader(_fileStream, Encoding.UTF8);
-        using var _reader = TextReader.Synchronized(_streamReader);
-        _fileSize = _fileStream.Length;
+        using var fileStream = new FileStream(options.FilePath, FileMode.Open, FileAccess.Read);
+        using var streamReader = new StreamReader(fileStream, Encoding.UTF8);
+        using var reader = TextReader.Synchronized(streamReader);
+        _fileSize = fileStream.Length;
 
-        Task monitor = LaunchWorkers(_reader, options.WorkerCount, options.Verbose);
+        Task monitor = LaunchWorkers(reader, options.WorkerCount, options.Verbose);
 
         await CheckProgress(monitor, options.Verbose);
         await OutputComissions(options.Verbose);
@@ -148,15 +147,6 @@ public class TransferBatchService
                 if (verbose)
                 {
                     Console.WriteLine($"Invalid line: \"{line}\"");
-                }
-                continue;
-            }
-
-            if (!_checkedTransactions.TryAdd(cols[1], true))
-            {
-                if (verbose)
-                {
-                    Console.WriteLine($"Duplicated transaction: \"{line}\"");
                 }
                 continue;
             }

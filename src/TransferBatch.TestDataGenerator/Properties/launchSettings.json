@@ -2,7 +2,7 @@
   "profiles": {
     "TransferBatch.TestDataGenerator": {
       "commandName": "Project",
-      "commandLineArgs": "..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.100KB.csv"
+      "commandLineArgs": "-FileSizeLimit 8000000000 ..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.8GB.csv"
     }
   }
 }

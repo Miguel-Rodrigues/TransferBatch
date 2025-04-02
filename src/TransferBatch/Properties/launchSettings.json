@@ -2,8 +2,9 @@
   "profiles": {
     "TransferBatch": {
       "commandName": "Project",
-      //"commandLineArgs": "-verbose -WorkerCount 1 ..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.100KB.csv"
-      "commandLineArgs": "-verbose -WorkerCount 1 ..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.invalid.csv"
+      "commandLineArgs": "-verbose -WorkerCount 1 ..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.100KB.csv"
+      //"commandLineArgs": "-verbose -WorkerCount 1 ..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.8GB.csv"
+      //"commandLineArgs": "-verbose -WorkerCount 1 ..\\..\\..\\..\\..\\TransferBatch.IntegrationTests\\TestData\\sample.transfers.invalid.csv"
     }
   }
 }
